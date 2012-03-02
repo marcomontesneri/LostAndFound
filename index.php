@@ -10,7 +10,7 @@ F3::config('setup.cfg');
 // Set DB ; can't be done in setup file
 F3::set('DB',
 	new DB(
-		'mysql:host=localhost;port=3306;dbname=lostandfound',
+		'mysql:host=127.0.0.1;port=3306;dbname=lostandfound',
 		'root',
 		'root'
 	)

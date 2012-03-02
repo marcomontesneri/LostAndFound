@@ -1,0 +1,150 @@
+<html>
+	<head>
+		<title>Test API</title>
+	</head>
+	<button id="refreshLostList">Refresh losts</button>
+	<ul id="lostsList"></ul>
+
+	<form action="#" id="requestForm"></form>
+	<form action="#" id="autoRestForm"></form>
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+
+		$.fn.requestLostsList = function(success, fail) {
+			return $.getJSON("/api/losts", success, fail);
+		};
+
+		$.fn.requestLost = function(id, success, fail) {
+			$.getJSON("/api/losts/" + id, success, fail);
+		};
+
+		$.fn.fillLostsLists = function(lostsItems) {
+			var lis = [];
+			$.each(lostsItems, function(key, value) {
+				lis.push('<li data-idlost="' + value.idlost + '" class="lost">' + value.name + '</li>');
+			});
+			$(this).html(lis.join(''));
+			$(this).children("li").click(function() {
+				console.log($(this).data('idlost'));
+			});
+		};
+
+		$.fn.refreshLostsOnClick = function(listsToFillWith) {
+			$(this).click(
+				function() {
+			
+					$("#lostsList").empty();
+
+					$(document).requestLostsList().fail(function() {
+						alert("request losts list failed");
+					}).done(function(data) {
+						$(listsToFillWith).fillLostsLists(data);
+					});
+				}
+
+			);
+		};
+
+		/*	restElements type :
+				[
+					{
+						type:('elementType'),
+						content:('anything')
+					},
+					...
+				]
+		 */
+		$.fn.selfRestUrlBuildingForm = function(restElements) {
+
+			var newChildren = [];
+
+			$.each(restElements, function(index, restElement) {
+				
+				var newChild;
+
+				switch(restElement.type) {
+					case 'input':
+						newChild = document.createElement("input");
+						$(newChild).val(restElement.content);
+					break;
+					default:
+						newChild = document.createElement(restElement.type);
+						$(newChild).html(restElement.content);
+					break;
+				}
+
+				$(newChild).addClass("containsRestPath");
+				newChildren.push(
+					newChild, 
+					$(document).createSubmitButton("g", {step:1, method:"GET"},"GET", 1),
+					$(document).createSubmitButton("p", {step:2, method:"POST"}, "POST", 2)
+				);
+			});
+							
+			$(this).append(newChildren);
+			$(this).buildAndRequestInnerRestUrlOnSubmit();
+		}
+
+		$.fn.createSubmitButton = function(text, data, method, value) {
+			var button = document.createElement("button");
+			$(button).text(text);
+			$(button).attr("formmethod", method);
+			$(button).attr("value", value);
+			$(button).on("click", data, function(event) {
+				//do nothing, just include data in event
+				console.log("buttonEvent", event);
+			});		
+			return button;
+		}
+
+		$.fn.buildAndRequestInnerRestUrlOnSubmit = function() {
+			$(this).submit(function(eventData) {
+				var requestUrl = "",
+					// Retrieve children elements having a particular class 
+					parentChildren = $(this).children(".containsRestPath");
+
+				// for each child, happend input value or text to the request
+				$.each(parentChildren, function(index, element) {
+					requestUrl += $(element).is("input") ? $(element).val() : $(element).html();
+				});
+
+				console.log("RequestUrl", requestUrl);
+				console.log("SubmitEvent", eventData);
+				return false;
+
+			});
+		}
+
+		$.fn.showLost = function(item) {
+			console.log(item);
+		};
+
+		$("#refreshLostList").refreshLostsOnClick("#lostsList");
+
+		$("#requestForm").selfRestUrlBuildingForm(
+			[
+				{
+					type:"span",
+					content:"/api/losts/"
+				}
+			]
+		);
+
+		$("#autoRestForm").selfRestUrlBuildingForm(
+			[
+				{
+					type:"span",
+					content:"/api/losts/"
+				},
+				{
+					type:"input",
+					content:"1"
+				}
+			]
+		);
+
+	});
+	</script>
+</html>
