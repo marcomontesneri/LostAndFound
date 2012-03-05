@@ -1,0 +1,75 @@
+<html>
+	<head>
+		<title>Test</title>
+	</head>
+	<form action="" id="autoForm">
+		<span class="autoRestChild">/api/losts/</span>
+		<input class="autoRestChild" type="" value="1">
+	</form>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+	<script type="text/javascript">
+	
+(function() {
+
+var autoRestForm = {
+
+	container: null,
+
+	config: {
+		children: ".autoRestChild"
+	},
+
+	init: function(container, config) {
+		this.container = $(container);
+		$.extend(this.config, config);
+		this.children = $(this.config.children);		
+		//console.log(this.children);
+		this.container.delegate("button", "click", $.proxy(this.rollbackUrl, this));
+		this.createButtons();
+	},
+
+	rollbackUrl: function(e) {
+		// this = the autoRestForm
+		var button = $(e.srcElement),
+			prevs,
+			url = "",
+			prevContent = "";
+		
+		prevs = button.prevAll(this.config.children);
+		
+		prevs.each(function(index, prev){
+			switch(prev.tagName) {
+				case "INPUT":
+					prevContent = prev.value;
+					break;
+				default:
+					console.log(prev);
+					prevContent = prev.innerHTML;
+					break;
+			}
+			url = prevContent + url;
+		});
+
+		console.log(url);
+
+
+
+
+		return false;
+
+	},
+
+	createButtons: function() {
+		$("<button></button>", {
+			text: "get"
+		})
+			.insertAfter(this.children);
+	}
+}
+
+autoRestForm.init("#autoForm");
+
+})();
+
+	</script>
+</html>
