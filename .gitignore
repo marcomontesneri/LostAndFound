@@ -1,6 +1,3 @@
-# ignore F3 temp dir
-temp/*
-
 # ignore mac os x folder orefs file
 .DS_STORE
 
