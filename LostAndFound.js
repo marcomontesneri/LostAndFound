@@ -4,7 +4,7 @@ var http = require('http'),
 	mongoose = require('mongoose');
 	
 /* Setup mongoose */
-var mongourl = process.env.NODE_DB || 'mongodb://localhost/laf';
+var mongourl = process.argv[3] || process.env.NODE_DB || 'mongodb://localhost/laf';
 mongoose.connect(mongourl);
 
 var Schema = mongoose.Schema,
@@ -71,7 +71,8 @@ app.post('/api/lost', function(req, res) {
 });
 
 var port = process.env.PORT || 9001;
+var env = process.argv[2] || process.env.NODE_ENV || 'development';
 app.listen(port);
 console.log("listening on port ", port);
 console.log("mongodb url ", mongourl);
-console.log("node env", process.env.NODE_ENV);
+console.log("node env", env);
