@@ -8,7 +8,7 @@ html(lang="en")
 		link(rel='stylesheet',href='static/style/bootstrap/jquery-ui-1.8.16.custom.css',media='screen')
 	body
 		.container
-			form#addLost(method='post', action='/api/lost')
+			form#declareLossForm(method='post', action='/api/lost')
 				h1 Declare a loss
 				label
 					| Description
@@ -19,7 +19,15 @@ html(lang="en")
 				label
 					| Where ?
 					input(name='lost[where]',value='somewhere')
-				button(action='submit') Declare this loss :(
+				button.btn Declare this loss :(
+		#lossModal.modal.hide.fade
+			.modal-header
+				a.close(data-dismiss='modal') x
+				h3 We got your loss
+			.modal-body
+				p.message
+			.modal-footer
+				a.btn.btn-primary(data-dismiss='modal') OK :)
 		script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
 		script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
 		script(src='static/script/bootstrap.min.js')
