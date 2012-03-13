@@ -20,6 +20,6 @@ Two goals behind "LostAndFound" project :
 After all above required tools are installed, you may want to set the optionnal environment variables
 
 - NODE_ENV [development|prodution] : changes nothing ATM but certainly in the future
-- DB : the mongodb access url (default is mongodb://localhost/laf)
-- PORT : listened port, default is 9001
+- NODE_DB : the mongodb access url (default is mongodb://localhost/laf)
+- NODE_PORT : listened port, default is 9001
 
