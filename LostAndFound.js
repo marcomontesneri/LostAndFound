@@ -68,4 +68,6 @@ app.post('/api/lost', function(req, res) {
 	});
 });
 
-app.listen(8000);
+var port = process.env.PORT || 8000;
+app.listen(port);
+console.log("listening on port ", port);
