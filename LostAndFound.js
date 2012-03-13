@@ -4,7 +4,8 @@ var http = require('http'),
 	mongoose = require('mongoose');
 	
 /* Setup mongoose */
-mongoose.connect('mongodb://localhost/laf');
+
+mongoose.connect(process.env.DB || 'mongodb://localhost/laf');
 var Schema = mongoose.Schema,
 	Contact = mongoose.model('Contact', new Schema({
 		firstName: String,
