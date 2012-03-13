@@ -70,7 +70,7 @@ app.post('/api/lost', function(req, res) {
 	});
 });
 
-var port = process.env.NODE_PORT || 9001;
+var port = process.env.PORT || 9001;
 app.listen(port);
 console.log("listening on port ", port);
 console.log("mongodb url ", mongourl);

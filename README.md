@@ -21,5 +21,5 @@ After all above required tools are installed, you may want to set the optionnal 
 
 - NODE_ENV [development|prodution] : changes nothing ATM but certainly in the future
 - NODE_DB : the mongodb access url (default is mongodb://localhost/laf)
-- NODE_PORT : listened port, default is 9001
+- PORT : listened port, default is 9001
 
