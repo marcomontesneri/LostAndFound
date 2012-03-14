@@ -1,0 +1,9 @@
+extends layout
+
+block mainContent
+	form#addCategoryForm(method='post', action='/api/category')
+		h1 Create a category
+		label
+			| Label
+			input.name(name='label',value='')
+		button.btn.btn-success.submit Create category

@@ -53,7 +53,16 @@ app.set('view options', {
 });
 
 app.get('/', function(req, res) {
-	res.render('index');
+	res.render('home');
+});
+
+app.get('/categories', function(req, res) {
+	res.render('categories');
+});
+
+
+app.get('/declareLoss', function(req, res) {
+	res.render('declareLoss');
 });
 
 app.get('/api/losts', function(req, res) {

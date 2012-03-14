@@ -1,0 +1,19 @@
+doctype 5
+html(lang="en")
+	include includes/head
+	body
+		include includes/navbar 
+		.container
+			block mainContent
+		#lossModal.modal.hide.fade
+			.modal-header
+				a.close(data-dismiss='modal') x
+				h3 We got your loss
+			.modal-body
+				p.message
+			.modal-footer
+				a.btn.btn-primary(data-dismiss='modal') OK :)
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
+		script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
+		script(src='static/script/bootstrap.min.js')
+		script(src='static/script/scripts.js')
