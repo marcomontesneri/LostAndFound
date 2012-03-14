@@ -7,6 +7,20 @@ html(lang="en")
 		link(rel='stylesheet',href='static/style/bootstrap-responsive.min.css',media='screen')
 		link(rel='stylesheet',href='static/style/bootstrap/jquery-ui-1.8.16.custom.css',media='screen')
 	body
+		.navbar
+			.navbar-inner
+				.container
+					a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.brand(href='#') Lost And Found
+					.nav-collapse
+						ul.nav
+							li
+								a(href='/') Home
+							li
+								a(href='/categories') Categories 
 		.container
 			form#declareLossForm(method='post', action='/api/lost')
 				h1 Declare a loss
