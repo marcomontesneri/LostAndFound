@@ -12,7 +12,9 @@ Two goals behind "LostAndFound" project :
 	+ [jade](http://jade-lang.com/) the template engine
 	+ [mongoose](http://mongoosejs.com/)MongoDB library
 - [MongoDB](http://www.mongodb.org/)
+
 # Optional
+
 - [Foreman](http://blog.daviddollar.org/2011/05/06/introducing-foreman.html) : helps you run the app (Procfile done)
 - [Heroku](http://www.heroku.com/) : app hosting (package.json done)
 
@@ -24,4 +26,3 @@ After all above required tools are installed, you may want to set the optionnal 
 - PORT : listened port, default is 9001
 
 You can also pass NODE_ENV and NODE_DB through command line (in this order), note that it's the only way to specify this under Cloud9.
-
