@@ -22,14 +22,31 @@
 		
 	});
 
-	$('#addCategoryForm').submit(function(event){
+	var addCategoryForm = $('#addCategoryForm'),
+		addFieldButton = $('<button class="btn">Add a field</button>'),
+		submitButton = addCategoryForm.find('button.submit');
+
+	addCategoryForm.delegate(".removeField", "click", function(event){
+		$(this).parent().remove();
+	});
+
+	addCategoryForm.find("button.submit").before(addFieldButton);
+
+	addFieldButton.click(function(event) {
+		event.preventDefault();
+		var field = $('<label class="additionalField">Additional field<a class="btn btn-danger removeField"><i class="icon-remove icon-white"></i></a><input/></label>Ò');
+
+		addFieldButton.before(field);		
+	});
+
+	addCategoryForm.submit(function(event){
 		event.preventDefault();
 		var $form = $(this),
 			category = {
 				label: $form.find('input.name').val(),
 				fields: []
 			},
-			fieldsInput = $form.find('input.additionalField');
+			fieldsInput = $form.find('.additionalField input');
 
 		$.each(fieldsInput, function(index, field) {
 			category.fields.push($(field).val());
