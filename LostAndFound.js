@@ -1,6 +1,5 @@
 /* Requierements */
-var http = require('http'),
-	express = require('express'),
+var express = require('express'),
 	mongoose = require('mongoose');
 	
 /* Setup mongoose */
@@ -12,6 +11,10 @@ var Schema = mongoose.Schema,
 		firstName: String,
 		lastName: String
 	})),
+	Category = mongoose.model('Category', new Schema({
+		label: String,
+		fields: [String]
+	})),
 	Storage = mongoose.model('Storage', new Schema({
 		desc: String,
 		state: String
@@ -21,7 +24,12 @@ var Schema = mongoose.Schema,
 		lostOn: Date,
 		declaredOn: Date,
 		where: String,
-		owner: String
+		owner: String,
+		category: String,
+		fields: [{
+			label: String,
+			value: String
+		}]
 	})),
 	Found = mongoose.model('Found', new Schema({
 		shortDesc: String,
@@ -67,6 +75,28 @@ app.post('/api/lost', function(req, res) {
 				error: err
 			});
 		}
+	});
+});
+
+app.post('/api/category', function(req, res) {
+	Category.create(req.body.category, function(err, doc) {
+		if(!err) {
+			res.send({
+				result:'ok',
+				category: doc
+			});
+		} else {
+			res.send({
+				result:'error',
+				error: err
+			});
+		}
+	});
+});
+
+app.get('/api/categories', function(req, res){
+	Category.find({}, function(err, doc){
+		res.send(doc);
 	});
 });
 

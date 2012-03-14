@@ -20,6 +20,15 @@ html(lang="en")
 					| Where ?
 					input(name='lost[where]',value='somewhere')
 				button.btn Declare this loss :(
+			form#addCategoryForm(method='post', action='/api/category')
+				h1 Create a category
+				label
+					| Label
+					input.name(name='label',value='')
+				label
+					| Field	
+					input.additionalField(value='')
+				button.btn Create category
 		#lossModal.modal.hide.fade
 			.modal-header
 				a.close(data-dismiss='modal') x
