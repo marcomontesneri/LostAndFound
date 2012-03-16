@@ -22,15 +22,14 @@
 		
 	});
 
-	var addCategoryForm = $('#addCategoryForm'),
-		submitButton = addCategoryForm.find('button.submit');
-		addCategoryForm.find('.fields').tagit({
-			itemName: 'category',
-			fieldName: 'fields',
-			allowSpaces: true,
-			placeHolder: 'Type the fields here...'
-		});
+	var addCategoryForm = $('#addCategoryForm');
 
+	addCategoryForm.find('.fields').tagit({
+		itemName: 'category',
+		fieldName: 'fields',
+		allowSpaces: true,
+		placeholderText: 'Type the additional fields here...'
+	});
 
 	addCategoryForm.submit(function(event){
 		event.preventDefault();
@@ -47,4 +46,23 @@
 		});
 		
 	});
+
+	$('#registerForm').submit(function(event){
+		event.preventDefault();
+		var $form = $(this),
+			user = {};
+		
+		$.each($form.find('input'), function(index, input) {
+			var $input = $(input);
+			user[$input.attr('name')] = $input.val();
+		});
+
+		$.post($form.attr('action'), {user:user}, function(data){
+			modal.modal('show');
+			modal.find('.message').text(data.result == 'ok' ? "Successfully registered" : "Hum, something wrong just happened");
+		});
+		
+	});
+
+
 })();

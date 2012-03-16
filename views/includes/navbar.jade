@@ -5,12 +5,30 @@
 				span.icon-bar
 				span.icon-bar
 				span.icon-bar
-			a.brand(href='#') Lost And Found
+			a.brand(href='/') Lost And Found
 			.nav-collapse
 				ul.nav
-					li
-						a(href='/') Home
-					li
-						a(href='/categories') Categories
-					li
-						a(href='/declareLoss') Declare a loss
+					- if (typeof user !== "undefined")
+						li
+							a(href='/categories') Categories
+						li
+							a(href='/declareLoss') Declare a loss
+					- else
+						li
+							a(href='/register') Register
+				ul.nav.pull-right
+					- if (typeof user !== "undefined")
+						li
+							a Hi #{user.firstName} !
+						li
+							form.navbar-form(action='/logout', method='get')
+								button.btn.btn-danger logout 
+									i.icon-off.icon-white
+					- else
+						li
+							form.navbar-form(action='/login', method='post')
+								input(name='email', placeholder='email')
+								input.input-small(name='password', placeholder='password', type='password')
+								button.btn.btn-primary Sign in
+				
+					

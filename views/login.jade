@@ -1,0 +1,14 @@
+extends layout
+
+block mainContent
+	h1 Welcome ! Please, sign in
+	form.well.form-inline(action='/login', method='post')
+		- if (typeof error !== "undefined" && error != '')
+			.alert.alert-error
+				a.close(data-dismiss='alert') ×
+				h4.alert-heading We could not sign you up ! 
+				| #{error}
+
+		input(name='email', placeholder='email')
+		input.input-small(name='password', placeholder='password', type='password')
+		button.btn.btn-primary Sign in
