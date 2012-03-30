@@ -9,8 +9,14 @@
 			.nav-collapse
 				ul.nav
 					- if (typeof user !== "undefined")
-						li
-							a(href='/categories') Categories
+						- if (user.role == "admin")
+							li
+								a(href='/categories') Categories
+							li
+								a(href='/createUser') Create User
+						- if (user.role == "admin" || user.role == "volunteer")
+							li
+								a(href='/loss') Lost items
 						li
 							a(href='/declareLoss') Declare a loss
 					- else

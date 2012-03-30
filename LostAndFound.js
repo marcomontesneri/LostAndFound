@@ -79,10 +79,10 @@ passport.use(new LocalStrategy({
 			if(!user) {
 				return done(null, false, { message: 'Unknow user' });
 			}
-			if(!user.password == saltySha1(password)) {
-				return done(nul, false, { message: 'Invalid password' });
+			if(!(user.password == saltySha1(password))) {
+				return done(null, false, { message: 'Invalid password' });
 			}
-			return done(null, user);
+			return done(null, user, { message: 'Welcome ;)'});
 		});
 	}
 ));
@@ -99,7 +99,29 @@ passport.deserializeUser(function(email, done) {
 
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) { return next(); }
+	req.flash('error', 'You need to be logged');
 	res.redirect('/login');
+}
+function ensureAdmin(req, res, next) {
+	if (! req.isAuthenticated()) {
+		req.flash('error', 'You need to be logged');
+		res.redirect('/login');
+	} else {
+		if(req.user.role == "admin") return next();
+		req.flash('error', 'You are not allowed :(');
+		res.redirect('/login');
+	}
+	
+}
+function ensureVolunteer(req, res, next) {
+	if (! req.isAuthenticated()) {
+		req.flash('error', 'You need to be logged');
+		res.redirect('/login');
+	} else {
+		if(req.user.role == "admin" || req.user.role == "volunteer") return next();
+		req.flash('error', 'You are not allowed :(');
+		res.redirect('/login');
+	}
 }
 
 /* Create the app */
@@ -141,7 +163,8 @@ app.post('/login',
 	passport.authenticate('local', {
 		successRedirect: '/',
 		failureRedirect: '/login',
-		failureFlash: true
+		failureFlash: true,
+		successFlash: "Welcome :)"
 	})
 );
 
@@ -150,7 +173,7 @@ app.get('/logout', function(req, res){
 	res.redirect('/');
 });
 
-app.get('/categories', ensureAuthenticated, function(req, res) {
+app.get('/categories', ensureAdmin, function(req, res) {
 	res.render('categories', { 
 		user : req.user,
 		error: req.flash('error')
@@ -159,6 +182,20 @@ app.get('/categories', ensureAuthenticated, function(req, res) {
 
 app.get('/declareLoss', ensureAuthenticated, function(req, res) {
 	res.render('declareLoss', { 
+		user : req.user,
+		error: req.flash('error')
+	});
+});
+
+app.get('/loss', ensureVolunteer, function(req, res) {
+	res.render('loss', { 
+		user : req.user,
+		error: req.flash('error')
+	});
+});
+
+app.get('/createUser', ensureAdmin, function(req, res) {
+	res.render('createUser', { 
 		user : req.user,
 		error: req.flash('error')
 	});
@@ -194,6 +231,24 @@ app.post('/api/lost', function(req, res) {
 });
 
 app.post('/api/register', function(req, res) {
+	var user = req.body.user;
+	user.role = 'lambda';
+	User.create(user, function(err, doc) {
+		if(!err) {
+			res.json({
+				result:'ok',
+				lost: doc
+			});
+		} else {
+			res.json({
+				result:'error',
+				error: err
+			});
+		}
+	});
+});
+
+app.post('/api/createUser', ensureAdmin, function(req, res) {
 	User.create(req.body.user, function(err, doc) {
 		if(!err) {
 			res.json({

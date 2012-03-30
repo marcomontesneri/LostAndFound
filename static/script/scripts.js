@@ -64,5 +64,24 @@
 		
 	});
 
+	$('#createUserForm').submit(function(event){
+		event.preventDefault();
+		var $form = $(this),
+			user = {};
+		
+		$.each($form.find('input'), function(index, input) {
+			var $input = $(input);
+			user[$input.attr('name')] = $input.val();
+		});
+
+		user.role = $form.find('select').val();
+
+		$.post($form.attr('action'), {user:user}, function(data){
+			modal.modal('show');
+			modal.find('.message').text(data.result == 'ok' ? "Successfully registered" : "Hum, something wrong just happened");
+		});
+		
+	});
+
 
 })();
