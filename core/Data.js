@@ -40,7 +40,6 @@ Data.prototype.User = mongoose.model('User', new Schema({
 	password:  {
 		type:String,
 		required: true,
-		unique: true,
 		set: Data.prototype.saltySha1
 	},
 	role: String

@@ -48,7 +48,7 @@ module.exports = function(app) {
 		});
 	});
 
-	app.post('/api/createUser', Auth.ensureAdmin, function(req, res) {
+	app.post('/api/user', Auth.ensureAdmin, function(req, res) {
 		User.create(req.body.user, function(err, doc) {
 			if(!err) {
 				res.json({
@@ -85,4 +85,4 @@ module.exports = function(app) {
 			res.send(doc);
 		});
 	});
-}
+};

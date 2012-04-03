@@ -1,6 +1,18 @@
 extends layout
 
 block mainContent
+	- if (typeof error !== "undefined" && error != "")
+		.alert.alert-error= error
+	section.categoryList
+		h1 Categories
+		- if (typeof categories !== "undefined")
+			ul.nav.nav-list
+				each category in categories
+					li 
+						a= category.label
+		- else
+			.alert.alert-info No category yet :(
+	each 
 	form#addCategoryForm(method='post', action='/api/category')
 		h1 Create a category
 		label
