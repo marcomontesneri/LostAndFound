@@ -1,0 +1,49 @@
+extends layout
+
+block mainContent
+	- if (typeof error !== "undefined" && error != "")
+		.alert.alert-error= error
+	- if (typeof createdUser !== "undefined")
+		.alert.alert-success #{"Newly created " + createdUser.role + " : " + createdUser.firstName + " " + createdUser.lastName}
+	section.userList 
+		h1 Users
+			a#userCreationModalShow.btn.btn-success(data-toggle="modal", href="#createUserModal")
+				i.icon-plus.icon-white
+				span Create User
+		- if (typeof users !== "undefined")
+			.wel
+				ul.nav.nav-list
+					each user in users
+						li 
+							a #{user.firstName + ' ' + user.lastName}
+		- else
+			.alert.alert-info No user ? I think not Something wrong happened... :(
+		
+	#createUserModal.modal.hide.fade
+		.modal-header
+			a.close(data-dismiss='modal') x
+			h3 Create a user
+
+		form(action='/user', method='post')
+			.modal-body
+				label First name
+					input(name='user[firstName]')
+				label Last name
+					input(name='user[lastName]')
+				label Email
+					input(name='user[email]')
+				label Password
+					input(name='user[password]')
+				label Address
+					input(name='user[address]')
+				label Phone number
+					input(name='user[phone]')
+				label Role
+					select(name='user[role]')
+						option volunteer
+						option admin
+						option lambda
+			.modal-footer
+				a.btn(data-dismiss='modal') Cancel
+				button.btn.btn-success(type="submit") Save
+		
