@@ -11,11 +11,34 @@ block mainContent
 				i.icon-plus.icon-white
 				span Create User
 		- if (typeof users !== "undefined")
-			.wel
-				ul.nav.nav-list
+			.row
+				ul.nav.nav-list.span6.well
 					each user in users
 						li 
 							a #{user.firstName + ' ' + user.lastName}
+
+				.span4
+					form(action='/user', method='get')
+					input(type="hidden",value="")
+					label Role
+						select(name='user[role]')
+							option volunteer
+							option admin
+							option lambda
+					label First name
+						input(name='user[firstName]')
+					label Last name
+						input(name='user[lastName]')
+					label Email
+						input(name='user[email]', type='email')
+					label Password
+						input(name='user[password]', type='password')
+					label Address
+						input(name='user[address]')
+					label Phone number
+						input(name='user[phone]')
+					a.btn Cancel
+					button.btn.btn-success(type="submit") Save
 		- else
 			.alert.alert-info No user ? I think not Something wrong happened... :(
 		
@@ -26,23 +49,23 @@ block mainContent
 
 		form(action='/user', method='post')
 			.modal-body
-				label First name
-					input(name='user[firstName]')
-				label Last name
-					input(name='user[lastName]')
-				label Email
-					input(name='user[email]')
-				label Password
-					input(name='user[password]')
-				label Address
-					input(name='user[address]')
-				label Phone number
-					input(name='user[phone]')
 				label Role
 					select(name='user[role]')
 						option volunteer
 						option admin
 						option lambda
+				label First name
+					input(name='user[firstName]')
+				label Last name
+					input(name='user[lastName]')
+				label Email
+					input(name='user[email]', type='email')
+				label Password
+					input(name='user[password]', type='password')
+				label Address
+					input(name='user[address]')
+				label Phone number
+					input(name='user[phone]')
 			.modal-footer
 				a.btn(data-dismiss='modal') Cancel
 				button.btn.btn-success(type="submit") Save

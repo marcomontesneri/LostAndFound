@@ -5,7 +5,7 @@
 				span.icon-bar
 				span.icon-bar
 				span.icon-bar
-			a.brand(href='/') Lost And Found
+			a.brand(href='/') Lost&Found
 			.nav-collapse
 				ul.nav
 					- if (typeof user !== "undefined")
@@ -13,10 +13,10 @@
 							li
 								a(href='/categories') Categories
 							li
-								a(href='/user') Create User
+								a(href='/user') Users
 						- if (user.role == "admin" || user.role == "volunteer")
 							li
-								a(href='/loss') Lost items
+								a(href='/loss') Lost
 						li
 							a(href='/declareLoss') Declare a loss
 					- else
