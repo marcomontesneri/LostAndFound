@@ -11,9 +11,22 @@ body
 	h3 Nous vous offrons un moment à vous deux, ou à vous trois, dans un endroit magique pas tellement loin d'ici :)
 	img.max(src='/static/img/perros3.jpg')
 	h1#perros Perros Guirec !
-	img.max(src='/static/img/perros2.jpg')
+	img.min(src='/static/img/perros5.jpg')
 	h3 On espère que vous aurez une météo comme sur ces photos afin de profiter au mieux de la côte de granite rose !
 	img(src='/static/img/perros1.jpg')
 	h3 Le soir venu, après un bon plateau de fruits de mer (n'est ce pas Yoann), vous pourrez vous reposer dans une chambre d'hôte en revant du petit déj' copieux qui vous attendra au matin.
 	img(src='/static/img/perros4.jpg')
 	h3 Il ne reste qu'à nous preciser vos dispos :)
+	script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
+	script(src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDMe5z3wmNaSOhMbjxYUR9_IIh1EyJwA98&sensor=false")
+	script
+		function initialize() {
+		var myOptions = {
+			center: new google.maps.LatLng(-34.397, 150.644),
+			zoom: 8,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		var map = new google.maps.Map(document.getElementById("map_canvas"),
+			myOptions);
+		}
+		$.ready(initialize);
