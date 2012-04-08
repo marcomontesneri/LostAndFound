@@ -48,13 +48,67 @@ module.exports = function(app) {
 		});
 	});
 
+	app.get('/api/user', Auth.ensureAdmin, function(req, res) {
+		User.find({}, {_id:0, password: 0}, function(err, users) {
+			if(!err) {
+				res.json(users);
+			} else {
+				return next(err);
+			}
+		});
+	});
+
 	app.post('/api/user', Auth.ensureAdmin, function(req, res) {
-		User.create(req.body.user, function(err, doc) {
+		User.create(req.body.user, function(err, user) {
 			if(!err) {
 				res.json({
 					result:'ok',
-					lost: doc
+					user: user
 				});
+			} else {
+				res.json({
+					result:'error',
+					error: err
+				});
+			}
+		});
+	});
+
+	app.put('/api/user/:email', Auth.ensureAdmin, function(req, res) {
+		var user = req.body.user,
+			email = req.params.email;
+		User.update({email:email}, user, function(err, user) {
+			if(!err) {
+				res.json({
+					result:'ok',
+					user: email
+				});
+			} else {
+				res.json({
+					result:'error',
+					error: err
+				});
+			}
+		});
+	});
+
+
+	app.delete('/api/user/:email', Auth.ensureAdmin, function(req, res) {
+		var email = req.params.email;
+		User.findOne({email : email}, function(err, user) {
+			if(!err) {
+				if(!user) {
+					res.json({
+						result:'error',
+						error: 'no user found'
+					});
+				} else {
+					user.remove();
+					res.json({
+						result:'ok',
+						email: email
+					});
+				}
 			} else {
 				res.json({
 					result:'error',

@@ -43,7 +43,7 @@ Data.prototype.User = mongoose.model('User', new Schema({
 		set: Data.prototype.saltySha1
 	},
 	role: String
-}));
+},{strict: true}));
 
 Data.prototype.Category = mongoose.model('Category', new Schema({
 	label: String,

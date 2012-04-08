@@ -15,6 +15,11 @@ module.exports = function(app, passport) {
 		});
 	});
 	
+
+	app.get('/perros', function(req, res) {
+		res.render('perros');
+	});
+	
 	app.get('/login', function(req, res) {
 		res.render('login', { 
 			user : req.user,
