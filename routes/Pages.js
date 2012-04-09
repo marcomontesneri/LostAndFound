@@ -61,7 +61,7 @@ module.exports = function(app, passport) {
 	});
 	
 	app.get('/user', Auth.ensureAdmin, function(req, res) {
-		User.find({}, function(err, users) {
+		User.find({}, {_id:0, password: 0}, function(err, users) {
 			res.render('user', { 
 				user : req.user,
 				error: req.flash('error') || err,

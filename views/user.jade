@@ -13,10 +13,10 @@ block mainContent
 		- if (typeof users !== "undefined")
 			.row
 				ul.nav.nav-list.span6.well#userList
-					each user in users
-						li(data-useremail='#{user.email}')
-							a #{user.firstName + ' ' + user.lastName}
-							span= user.email
+					//each user in users
+					//	li(data-useremail='#{user.email}')
+					//		a #{user.firstName + ' ' + user.lastName}
+					//		span= user.email
 
 
 				.span4
@@ -93,7 +93,8 @@ block pageScript
 
 		(function(){
 
-			var $form = $('#userDetails'),
+			var users = [#{users}],
+				$form = $('#userDetails'),
 				$deleteUserModal = $('#deleteUserModal'),
 				$userList = $('#userList'),
 
@@ -124,7 +125,8 @@ block pageScript
 						_method: 'delete'
 					}, 
 					success = function(data){
-						console.log(data);
+						showUserDetailsPanel(false);
+						refreshUsers();
 					};
 				$.post(url, data, success, 'json');
 			},
@@ -152,7 +154,7 @@ block pageScript
 			};
 
 			showUserDetailsPanel(false);
-			refreshUsers();
+			setUserList(users);
 
 			$form.find('.cancel').on('click', function(){
 				showUserDetailsPanel(false);
