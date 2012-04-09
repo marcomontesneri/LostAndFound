@@ -7,43 +7,45 @@ block mainContent
 		.alert.alert-success #{"Newly created " + createdUser.role + " : " + createdUser.firstName + " " + createdUser.lastName}
 	section.userList 
 		h1 Users
-			a#userCreationModalShow.btn.btn-success(data-toggle="modal", href="#createUserModal")
+			button#userCreationModalShow.btn.btn-success(data-toggle="modal", href="#createUserModal")
 				i.icon-plus.icon-white
 				span Create User
 		- if (typeof users !== "undefined")
 			.row
-				ul.nav.nav-list.span6.well
+				ul.nav.nav-list.span6.well#userList
 					each user in users
-						li 
+						li(data-useremail='#{user.email}')
 							a #{user.firstName + ' ' + user.lastName}
 							span= user.email
-							form(action='/api/user/#{user.email}', method='post')
-								input(type='hidden', name='_method','value=delete')
-								button.btn.btn-danger(type='submit') X
 
 
 				.span4
-					form(action='api/user/admin@admin.fr', method='post')
+					#help
+						h3 Need help ?
+						div Just click any user to display and edit its details
+					form#userDetails(method='post')
+						h3 User details
 						input(type="hidden",name='_method', value="put")
 						//label Role
-						//	select(name='user[role]')
+						//	select(name='user[role]', data-userAttr='role')
 						//		option volunteer
 						//		option admin
 						//		option lambda
 						label First name
-							input(name='user[firstName]')
+							input(name='user[firstName]', data-userAttr='firstName')
 						label Last name
-							input(name='user[lastName]')
-						//label Email
-						//	input(name='user[email]', type='email')
+							input(name='user[lastName]', data-userAttr='lastName')
+						label Email
+							input(name='user[email]', type='email', data-userAttr='email')
 						//label Password
-						//	input(name='user[password]', type='password')
-						//label Address
-						//	input(name='user[address]')
-						//label Phone number
-						//	input(name='user[phone]')
-						//a.btn Cancel
-						button.btn.btn-success(type="submit") Save
+						//	input(name='user[password]', type='password', data-userAttr='password')
+						label Address
+							input(name='user[address]', data-userAttr='address')
+						label Phone number
+							input(name='user[phone]', data-userAttr='phone')
+						a.btn.btn-danger.delete Delete User
+						a.btn.cancel Cancel
+						a.btn.btn-success(type="submit") Save
 		- else
 			.alert.alert-info No user ? I think not Something wrong happened... :(
 		
@@ -74,4 +76,103 @@ block mainContent
 			.modal-footer
 				a.btn(data-dismiss='modal') Cancel
 				button.btn.btn-success(type="submit") Save
-		
+	#deleteUserModal.modal.hide.fade
+		.modal-header
+			a.close(data-dismiss='modal') x
+			h3 Delete user ?
+		.modal-body
+			span Do you really want to delete
+			span.role lambda
+			span user
+			span.name John Smith 
+		.modal-footer
+			a.btn(data-dismiss='modal') Cancel
+			a.btn.btn-danger.confirm Confirm
+block pageScript
+	script
+
+		(function(){
+
+			var $form = $('#userDetails'),
+				$deleteUserModal = $('#deleteUserModal'),
+				$userList = $('#userList'),
+
+			showUserDetailsPanel = function(showIt) {
+				if(showIt) {
+					$form.show();
+					$('#help').hide();
+				} else {
+					$form.hide();
+					$('#help').show();
+				}
+			},
+			showUser = function(user) {
+				showUserDetailsPanel(true);
+				$form.attr('action', '/api/user/' + user.email);
+				$form.attr('data-userEmail', user.email);
+				$form.find('input').each(function(param){
+					// Fill inputs based on their data-UserAttr attributes
+					var $input = $(this),
+					attr = $input.attr('data-userAttr');
+					if(!attr) return;
+					$input.val(user[attr]);
+				});
+			},
+			deleteUser = function(userEmail){
+				var url = '/api/user/' + userEmail,
+					data = {
+						_method: 'delete'
+					}, 
+					success = function(data){
+						console.log(data);
+					};
+				$.post(url, data, success, 'json');
+			},
+			setUserList = function(users){
+				$userList.empty();
+				var $li, $a, $span;
+				$.each(users, function(index, user){
+					$li = $('<li>');
+					$userList.append($li);
+					$li.attr('data-useremail', user.email);
+					
+					$a = $('<a>');
+					$span = $('<span>');
+
+					$li.append($a, $span);
+
+					$span.text(user.email);
+					$a.text(user.firstName + ' ' + user.lastName);
+				});
+			},
+			refreshUsers = function(){
+				$.getJSON('/api/user', function(users){
+					setUserList(users);
+				});
+			};
+
+			showUserDetailsPanel(false);
+			refreshUsers();
+
+			$form.find('.cancel').on('click', function(){
+				showUserDetailsPanel(false);
+			});
+
+			$form.find('.delete').on('click', function(){
+				$deleteUserModal.modal();
+			});
+
+			$userList.delegate('li', 'click', function(){
+				var $li = $(this),
+					email = $li.attr('data-useremail');
+
+				$.getJSON('/api/user/' + email, showUser);
+
+			});
+
+			$deleteUserModal.find('.confirm').on('click', function(){
+				var email = $form.attr('data-userEmail');
+				$deleteUserModal.modal('hide');
+				deleteUser(email);
+			});
+		})();

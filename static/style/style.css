@@ -1,3 +1,7 @@
 .tagit {
 	width: 210px;
 }
+
+body .btn {
+	margin: 5px;
+}

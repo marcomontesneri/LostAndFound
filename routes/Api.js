@@ -74,6 +74,16 @@ module.exports = function(app) {
 		});
 	});
 
+	app.get('/api/user/:email', Auth.ensureAdmin, function(req, res) {
+		User.findOne({email:req.params.email}, {_id:0, password: 0}, function(err, user) {
+			if(!err) {
+				res.json(user);
+			} else {
+				return next(err);
+			}
+		});
+	});
+
 	app.put('/api/user/:email', Auth.ensureAdmin, function(req, res) {
 		var user = req.body.user,
 			email = req.params.email;
