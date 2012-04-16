@@ -72,7 +72,7 @@ module.exports = function(app, passport) {
 	
 	app.post('/user', Auth.ensureAdmin, function(req, res) {
 		User.create(req.body.user, function(createErr, user) {
-			User.find({}, function(err, users) {
+			User.find({}, {_id:0, password: 0}, function(err, users) {
 				res.render('user', { 
 					user : req.user,
 					error: (createErr ? "Something went wrong" : undefined) || req.flash('error') || err,

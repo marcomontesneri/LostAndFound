@@ -34,9 +34,9 @@ Auth.prototype.initialize = function(passport) {
 
 	passport.deserializeUser(function(email, done) {
 		User.findOne({email:email}, function(err, user) {
-			done(err, user);	
+			done(err, user);
 		});
-	});	
+	});
 }
 
 Auth.prototype.ensureAuthenticated = function(req, res, next) {

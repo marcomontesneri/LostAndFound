@@ -5,7 +5,7 @@ block mainContent
 		.alert.alert-error= error
 	- if (typeof createdUser !== "undefined")
 		.alert.alert-success #{"Newly created " + createdUser.role + " : " + createdUser.firstName + " " + createdUser.lastName}
-	section.userList 
+	section.userList
 		h1 Users
 			button#userCreationModalShow.btn.btn-success(data-toggle="modal", href="#createUserModal")
 				i.icon-plus.icon-white
@@ -13,12 +13,13 @@ block mainContent
 		- if (typeof users !== "undefined")
 			.row
 				ul.nav.nav-list.span6.well#userList
-					//each user in users
-					//	li(data-useremail='#{user.email}')
-					//		a #{user.firstName + ' ' + user.lastName}
-					//		span= user.email
 
-
+				script(id='userTemplate', type='text/x-handlebars-template')
+					{{#each users}}
+					li(data-useremail='{{email}}')
+						a {{firstName}} {{lastName}}
+						span {{email}}
+					{{/each}}
 				.span4
 					#help
 						h3 Need help ?
@@ -97,6 +98,7 @@ block pageScript
 				$form = $('#userDetails'),
 				$deleteUserModal = $('#deleteUserModal'),
 				$userList = $('#userList'),
+				userTemplate = Handlebars.compile($('#userTemplate').html()),
 
 			showUserDetailsPanel = function(showIt) {
 				if(showIt) {
@@ -131,21 +133,9 @@ block pageScript
 				$.post(url, data, success, 'json');
 			},
 			setUserList = function(users){
-				$userList.empty();
-				var $li, $a, $span;
-				$.each(users, function(index, user){
-					$li = $('<li>');
-					$userList.append($li);
-					$li.attr('data-useremail', user.email);
-					
-					$a = $('<a>');
-					$span = $('<span>');
-
-					$li.append($a, $span);
-
-					$span.text(user.email);
-					$a.text(user.firstName + ' ' + user.lastName);
-				});
+				$userList.html(userTemplate(
+					{users:users}
+				));
 			},
 			refreshUsers = function(){
 				$.getJSON('/api/user', function(users){
