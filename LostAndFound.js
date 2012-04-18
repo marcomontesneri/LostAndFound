@@ -1,25 +1,19 @@
 (function() {
-  var Auth, Data, MongoStore, app, env, express, mongourl, passport, port;
+  var Auth, Data, app, common, express, passport;
 
-  express = require('express');
-
-  passport = require('passport');
-
-  MongoStore = require('connect-mongodb');
+  common = require('./common');
 
   Data = require('./core/Data');
 
   Auth = require('./core/Auth');
 
-  mongourl = process.argv[3] || process.env.NODE_DB || 'mongodb://localhost/laf';
+  Data.connect(common.mongourl);
 
-  port = process.env.PORT || 9001;
+  express = common.express;
 
-  env = process.argv[2] || process.env.NODE_ENV || 'development';
+  app = common.app;
 
-  Data.connect(mongourl);
-
-  app = express.createServer();
+  passport = common.passport;
 
   app.configure(function() {
     app.use('/static', express.static(__dirname + '/static'));
@@ -29,7 +23,7 @@
     app.use(express.session({
       secret: 'awesome unicorns',
       maxAge: new Date(Date.now() + 3600000),
-      store: new MongoStore({
+      store: new common.mongoStore({
         db: Data.mongoose.connection.db
       }, function(err) {
         return console.log(err || 'connect-mongodb setup ok');
@@ -54,12 +48,12 @@
 
   require('./routes/Api')(app);
 
-  app.listen(port);
+  app.listen(common.port);
 
-  console.log("listening on port ", port);
+  console.log("listening on port ", common.port);
 
-  console.log("mongodb url ", mongourl);
+  console.log("mongodb url ", common.mongourl);
 
-  console.log("node env ", env);
+  console.log("node env ", common.env);
 
 }).call(this);
