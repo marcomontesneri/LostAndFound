@@ -1,11 +1,8 @@
-var Data = require('../core/Data'),
-	Auth = require('../core/Auth');
-
-var User = Data.User,
-	Category = Data.Category,
-	Storage = Data.Storage,
-	Lost = Data.Lost,
-	Found = Data.Found;
+var Auth = require('../core/Authentication'),
+	User = require('../data/User'),
+	Lost = require('../data/Lost'),
+	Found = require('../data/Found'),
+	Category = require('../data/Category');
 
 module.exports = function(app) {
 	app.get('/api/losts', function(req, res) {
@@ -48,7 +45,7 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get('/api/user', Auth.ensureAdmin, function(req, res) {
+	app.get('/api/user', Auth.isAdmin, function(req, res) {
 		User.find({}, {_id:0, password: 0}, function(err, users) {
 			if(!err) {
 				res.json(users);
@@ -58,8 +55,9 @@ module.exports = function(app) {
 		});
 	});
 
-	app.post('/api/user', Auth.ensureAdmin, function(req, res) {
-		User.create(req.body.user, function(err, user) {
+	app.post('/api/user', Auth.isAdmin, function(req, res) {
+		var user = req.body.user;
+		User.create(user, function(err, user) {
 			if(!err) {
 				res.json({
 					result:'ok',
@@ -74,7 +72,7 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get('/api/user/:email', Auth.ensureAdmin, function(req, res) {
+	app.get('/api/user/:email', Auth.isAdmin, function(req, res) {
 		User.findOne({email:req.params.email}, {_id:0, password: 0}, function(err, user) {
 			if(!err) {
 				res.json(user);
@@ -84,7 +82,7 @@ module.exports = function(app) {
 		});
 	});
 
-	app.put('/api/user/:email', Auth.ensureAdmin, function(req, res) {
+	app.put('/api/user/:email', Auth.isAdmin, function(req, res) {
 		var user = req.body.user,
 			email = req.params.email;
 		User.update({email:email}, user, function(err, user) {
@@ -103,7 +101,7 @@ module.exports = function(app) {
 	});
 
 
-	app.delete('/api/user/:email', Auth.ensureAdmin, function(req, res) {
+	app.delete('/api/user/:email', Auth.isAdmin, function(req, res) {
 		var email = req.params.email;
 		User.findOne({email : email}, function(err, user) {
 			if(!err) {

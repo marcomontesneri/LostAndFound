@@ -1,8 +1,6 @@
 common = require './common'
-Data = require './core/Data'
-Auth = require './core/Auth'
-
-Data.connect common.mongourl
+common.init()
+Auth = require './core/Authentication'
 
 # Middleware settings
 
@@ -19,14 +17,11 @@ app.configure ->
 		secret: 'awesome unicorns'
 		maxAge: new Date Date.now()+3600000
 		store: new common.mongoStore
-			db: Data.mongoose.connection.db
+			db: common.mongoose.connection.db
 			, (err) -> console.log err || 'connect-mongodb setup ok'
 	app.use passport.initialize()
 	app.use passport.session()
 	app.use app.router
-
-# Auth init
-Auth.initialize passport
 
 # View engine settings
 app.set 'view engine', 'jade'

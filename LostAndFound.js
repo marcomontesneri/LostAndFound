@@ -1,13 +1,11 @@
 (function() {
-  var Auth, Data, app, common, express, passport;
+  var Auth, app, common, express, passport;
 
   common = require('./common');
 
-  Data = require('./core/Data');
+  common.init();
 
-  Auth = require('./core/Auth');
-
-  Data.connect(common.mongourl);
+  Auth = require('./core/Authentication');
 
   express = common.express;
 
@@ -24,7 +22,7 @@
       secret: 'awesome unicorns',
       maxAge: new Date(Date.now() + 3600000),
       store: new common.mongoStore({
-        db: Data.mongoose.connection.db
+        db: common.mongoose.connection.db
       }, function(err) {
         return console.log(err || 'connect-mongodb setup ok');
       })
@@ -33,8 +31,6 @@
     app.use(passport.session());
     return app.use(app.router);
   });
-
-  Auth.initialize(passport);
 
   app.set('view engine', 'jade');
 

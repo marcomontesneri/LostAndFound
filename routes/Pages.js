@@ -1,11 +1,8 @@
-var Data = require('../core/Data'),
-	Auth = require('../core/Auth');
-
-var User = Data.User,
-	Category = Data.Category,
-	Storage = Data.Storage,
-	Lost = Data.Lost,
-	Found = Data.Found;
+var Auth = require('../core/Authentication'),
+	User = require('../data/User'),
+	Lost = require('../data/Lost'),
+	Found = require('../data/Found'),
+	Category = require('../data/Category');
 
 module.exports = function(app, passport) {
 	app.get('/', function(req, res) {
@@ -36,7 +33,7 @@ module.exports = function(app, passport) {
 		res.redirect('/');
 	});
 	
-	app.get('/categories', Auth.ensureAdmin, function(req, res) {
+	app.get('/categories', Auth.isAdmin, function(req, res) {
 		Category.find({}, function(err, categories){
             res.render('categories', { 
         		user : req.user,
@@ -46,21 +43,21 @@ module.exports = function(app, passport) {
         });
 	});
 	
-	app.get('/declareLoss', Auth.ensureAuthenticated, function(req, res) {
+	app.get('/declareLoss', Auth.isAuthenticated, function(req, res) {
 		res.render('declareLoss', { 
 			user : req.user,
 			error: req.flash('error')
 		});
 	});
 	
-	app.get('/loss', Auth.ensureVolunteer, function(req, res) {
+	app.get('/loss', Auth.isVolunteer, function(req, res) {
 		res.render('loss', { 
 			user : req.user,
 			error: req.flash('error')
 		});
 	});
 	
-	app.get('/user', Auth.ensureAdmin, function(req, res) {
+	app.get('/user', Auth.isAdmin, function(req, res) {
 		User.find({}, {_id:0, password: 0}, function(err, users) {
 			res.render('user', { 
 				user : req.user,
@@ -70,7 +67,7 @@ module.exports = function(app, passport) {
 		});		
 	});
 	
-	app.post('/user', Auth.ensureAdmin, function(req, res) {
+	app.post('/user', Auth.isAdmin, function(req, res) {
 		User.create(req.body.user, function(createErr, user) {
 			User.find({}, {_id:0, password: 0}, function(err, users) {
 				res.render('user', { 

@@ -1,2 +1,0 @@
-common = require './../common'
-
