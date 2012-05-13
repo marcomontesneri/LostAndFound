@@ -3,13 +3,12 @@ class Common
     passport: require 'passport'
     mongoose: require 'mongoose'
     mongoStore: require 'connect-mongodb'
-    init: ->
+    init: (mongourl, port, env) ->
         @app = @express.createServer()
-        @mongourl = process.argv[3] || process.env.NODE_DB || 'mongodb://localhost/laf'
-        @port = process.env.PORT || 9001
-        @env = process.argv[2] || process.env.NODE_ENV || 'development'
+        @mongourl = mongourl || process.argv[3] || process.env.NODE_DB || 'mongodb://localhost/laf'
+        @port = port || process.env.PORT || 9001
+        @env = env || process.argv[2] || process.env.NODE_ENV || 'development'
         @mongoose.connect(@mongourl) # connect to mongo url
-        @auth= require './core/Authentication'
         this
 
 instance = new Common

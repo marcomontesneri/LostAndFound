@@ -13,13 +13,12 @@
 
     Common.prototype.mongoStore = require('connect-mongodb');
 
-    Common.prototype.init = function() {
+    Common.prototype.init = function(mongourl, port, env) {
       this.app = this.express.createServer();
-      this.mongourl = process.argv[3] || process.env.NODE_DB || 'mongodb://localhost/laf';
-      this.port = process.env.PORT || 9001;
-      this.env = process.argv[2] || process.env.NODE_ENV || 'development';
+      this.mongourl = mongourl || process.argv[3] || process.env.NODE_DB || 'mongodb://localhost/laf';
+      this.port = port ||  process.env.PORT || 9001;
+      this.env = env ||  process.argv[2] || process.env.NODE_ENV || 'development';
       this.mongoose.connect(this.mongourl);
-      this.auth = require('./core/Authentication');
       return this;
     };
 

@@ -53,16 +53,12 @@
 
   model = mongoose.model('User', schema);
 
-  model.findCleanedOne = function(email, callback) {
-    return this.findOne({
-      email: email
-    }, cleaningOptions, callback);
+  model.findCleanedOne = function(query, callback) {
+    return this.findOne(query, cleaningOptions, callback);
   };
 
-  model.findCleaned = function(callback) {
-    return this.find({
-      useless: 'filter'
-    }, cleaningOptions, callback);
+  model.findCleaned = function(query, callback) {
+    return this.find(query, cleaningOptions, callback);
   };
 
   module.exports = model;

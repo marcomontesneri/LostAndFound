@@ -46,7 +46,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/api/user', Auth.isAdmin, function(req, res) {
-		User.find({}, {_id:0, password: 0}, function(err, users) {
+		User.findCleanedOne({}, function(err, users) {
 			if(!err) {
 				res.json(users);
 			} else {
@@ -73,7 +73,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/api/user/:email', Auth.isAdmin, function(req, res) {
-		User.findOne({email:req.params.email}, {_id:0, password: 0}, function(err, user) {
+		User.findCleanedOne({email:req.params.email}, function(err, user) {
 			if(!err) {
 				res.json(user);
 			} else {

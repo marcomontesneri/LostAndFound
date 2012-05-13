@@ -37,16 +37,10 @@ schema.methods.comparePassword = (password, callback) ->
 
 model = mongoose.model 'User', schema
 
-model.findCleanedOne = (email, callback) ->
-    this.findOne
-        email:email
-        ,cleaningOptions
-        ,callback
+model.findCleanedOne = (query, callback) ->
+    this.findOne query, cleaningOptions, callback
 
-model.findCleaned = (callback) ->
-    this.find
-        useless:'filter'
-        ,cleaningOptions
-        ,callback
+model.findCleaned = (query, callback) ->
+    this.find query, cleaningOptions, callback
 
 module.exports = model
