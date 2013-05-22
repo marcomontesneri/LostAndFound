@@ -14,7 +14,7 @@
     Common.prototype.mongoStore = require('connect-mongodb');
 
     Common.prototype.init = function(mongourl, port, env) {
-      this.app = this.express.createServer();
+      this.app = this.express();
       this.mongourl = mongourl || process.argv[3] || process.env.NODE_DB || 'mongodb://localhost/laf';
       this.port = port ||  process.env.PORT || 9001;
       this.env = env ||  process.argv[2] || process.env.NODE_ENV || 'development';
