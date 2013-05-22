@@ -22,7 +22,7 @@
     app.use(express.methodOverride());
     app.use(express.session({
       secret: 'awesome unicorns',
-      maxAge: new Date(Date.now() + 3600000),
+      maxAge: new Date(Date.now() + 60*60*1000),
       store: new common.mongoStore({
         db: common.mongoose.connection.db
       }, function(err) {

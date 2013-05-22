@@ -5,7 +5,7 @@
 
     function Common() {}
 
-    Common.prototype.express = require('express');
+    var express = Common.prototype.express = require('express');
 
     Common.prototype.flash = require('connect-flash')
 
@@ -13,7 +13,7 @@
 
     Common.prototype.mongoose = require('mongoose');
 
-    Common.prototype.mongoStore = require('connect-mongodb');
+    Common.prototype.mongoStore = require('connect-mongo')(express);
 
     Common.prototype.init = function(mongourl, port, env) {
       this.app = this.express();
