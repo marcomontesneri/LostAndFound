@@ -7,6 +7,8 @@
 
     Common.prototype.express = require('express');
 
+    Common.prototype.flash = require('connect-flash')
+
     Common.prototype.passport = require('passport');
 
     Common.prototype.mongoose = require('mongoose');

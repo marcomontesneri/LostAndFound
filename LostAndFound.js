@@ -11,6 +11,8 @@
 
   app = common.app;
 
+  flash = common.flash;
+
   passport = common.passport;
 
   app.configure(function() {
@@ -27,6 +29,7 @@
         return console.log(err || 'connect-mongodb setup ok');
       })
     }));
+    app.use(flash());
     app.use(passport.initialize());
     app.use(passport.session());
     return app.use(app.router);
