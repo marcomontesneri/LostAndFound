@@ -6,6 +6,7 @@ Auth = require './core/Authentication'
 
 express = common.express
 app = common.app
+flash = common.flash;
 passport = common.passport
 
 app.configure ->
@@ -15,10 +16,11 @@ app.configure ->
 	app.use express.methodOverride()
 	app.use express.session
 		secret: 'awesome unicorns'
-		maxAge: new Date Date.now()+3600000
+		maxAge: new Date Date.now()+60*60*1000
 		store: new common.mongoStore
 			db: common.mongoose.connection.db
-			, (err) -> console.log err || 'connect-mongodb setup ok'
+			, (err) -> console.log err || 'connect-mongo setup ok'
+  app.use flash()
 	app.use passport.initialize()
 	app.use passport.session()
 	app.use app.router

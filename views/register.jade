@@ -4,15 +4,15 @@ block mainContent
 	h1 Register
 		form#registerForm(action='/api/register', method='post')
 			label First name
-				input(name='firstName')
+				input(name='user[firstName]')
 			label Last name
-				input(name='lastName')
+				input(name='user[lastName]')
 			label Email
-				input(name='email')
+				input(name='user[email]')
 			label Password
-				input(name='password')
+				input(name='user[password]')
 			label Address
-				input(name='address')
+				input(name='user[address]')
 			label Phone number
-				input(name='phone')
+				input(name='user[phone]')
 			button.btn.btn-success Register

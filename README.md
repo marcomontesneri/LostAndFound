@@ -26,3 +26,7 @@ After all above required tools are installed, you may want to set the optionnal 
 - PORT : listened port, default is 9001
 
 You can also pass NODE_ENV and NODE_DB through command line (in this order), note that it's the only way to specify this under Cloud9.
+
+# Contributors
+ArnaudRinquin (the author)  
+ipetrovilya

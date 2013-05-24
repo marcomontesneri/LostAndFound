@@ -74,6 +74,14 @@
       return next();
     };
 
+    Authentication.prototype.isAuthenticated = function(req, res, next) {
+      if (!req.isAuthenticated) {
+        req.flash('error', 'you need to be logged');
+        res.redirect('/login');
+      }
+      return next();
+    };
+
     Authentication.prototype.isAdmin = function(req, res, next) {
       if (!req.isAuthenticated) {
         req.flash('error', 'you need to be logged');
